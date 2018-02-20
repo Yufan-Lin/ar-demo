@@ -1,0 +1,49 @@
+<html>
+  <head>
+    <title>AR</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.5.0/aframe/build/aframe-ar.js"></script>
+  </head>
+  <body>
+    <a-scene id="scene" embedded arjs='trackingMethod: best; debugUIEnabled: false;' vr-mode-ui="enabled: false">
+
+      <a-sky color="#ECECEC"></a-sky>
+
+      <a-marker id="marker" preset="hiro">
+        <a-box id="box" position='0 0.5 0' color="#4CC3D9"></a-box>
+      </a-marker>
+      
+      <a-entity camera>
+        <a-cursor material="color: red; opacity: 0.0"></a-cursor>
+      </a-entity>
+
+    </a-scene>
+
+<script type="text/javascript">
+  // `click` event emitted by browser on mouse click.
+  var boxEl = document.querySelector('#marker');
+  boxEl.addEventListener('click', () => {
+
+    var currentColor = document.querySelector('#box').getAttribute("color");
+
+    var color1 = "#4CC3D9";
+    var color2 = "#AA33EE";
+    var color3 = "#22EE00";
+
+    if (currentColor == color1) {
+      currentColor = color2;
+    } else if (currentColor == color2) {
+      currentColor = color3;
+    } else {
+      currentColor = color1;
+    }
+
+    document.querySelector("#box").setAttribute("color", currentColor);
+
+  });
+
+</script>
+
+  </body>
+</html>
