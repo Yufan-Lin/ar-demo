@@ -1,0 +1,41 @@
+<html>
+  <head>
+    <title>AR - Robot</title>
+    <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
+    <!-- <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.5.0/aframe/build/aframe-ar.js"></script> -->
+    <script src="lib/aframe-ar.js"></script>
+    <script type="text/javascript" src="js/app.js"></script>
+  </head>
+  <body>
+
+    <div>
+      <p id="loading" style="text-align:center;">Loading</p>
+    </div>
+
+    <a-scene embedded arjs='trackingMethod: best; debugUIEnabled: false' vr-mode-ui="enabled: false">
+
+      <a-assets>
+        <a-asset-item id="object" src="models/mech_drone/scene.gltf"></a-asset-item>
+      </a-assets>
+
+
+      <a-marker id="marker" preset='custom' type='pattern' url='data/pattern-marker.patt'>
+        <a-entity id="robot" gltf-model="#object" scale="0.01 0.01 0.01" position="0 0.2 0">
+            <a-animation id="rising" begin="click" attribute="position" from="0 0.2 0" to="0 3 0" easing="ease-in" direction="alternate-reverse"></a-animation>
+        </a-entity>
+      </a-marker>
+
+      <a-entity camera>
+        <a-cursor material="color: red; opacity: 0" cursor="fuse: false"></a-cursor>
+      </a-entity>
+
+    </a-scene>
+
+    <script>
+    
+
+    
+    </script>
+
+  </body>
+</html>

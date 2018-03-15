@@ -19,7 +19,10 @@
       </a-marker>
       
       <a-entity camera>
-        <a-cursor material="color: red; opacity: 0"></a-cursor>
+        <a-entity position="0 0 -3"
+                      geometry="primitive: ring; radiusInner: 0.2; radiusOuter: 0.3;"
+                      material="color: cyan; shader: flat"
+                      cursor="fuse: false">
       </a-entity>
 
     </a-scene>
