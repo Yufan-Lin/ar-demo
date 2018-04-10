@@ -3,8 +3,8 @@
     <title>AR</title>
     <meta name="apple-mobile-web-app-capable" content="yes">
     <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
-    <meta name="apple-mobile-web-app-capable" content="yes">
     <!-- <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.5.0/aframe/build/aframe-ar.js"></script> -->
+    <!-- <script src="js/aframe-physics-system.min.js"></script> -->
     <script src="lib/aframe-ar-1.5.5.js"></script>
   </head>
   <body style='margin : 0px; overflow: hidden;'>
@@ -20,27 +20,27 @@
       
       <a-entity camera>
         <a-entity position="0 0 -3"
-                      geometry="primitive: ring; radiusInner: 0.2; radiusOuter: 0.3;"
-                      material="color: cyan; shader: flat"
-                      cursor="fuse: false">
+                  cursor="fuse: false">
       </a-entity>
 
     </a-scene>
 
 <script type="text/javascript">
   // `click` event emitted by browser on mouse click.
-  var marker = document.querySelector('#marker');
-  var video = document.querySelector('video');
+  var videoAframe = document.querySelector('#video-aframe');
 
-  marker.addEventListener('click', () => {
+  scene.addEventListener('click', (e) => {
 
     if (video.paused) {
-        video.play();
+      console.log("Play!");
+      video.play();
     } else {
+      console.log("Pause!");
       video.pause();
     }
 
   });
+
 
 </script>
 
