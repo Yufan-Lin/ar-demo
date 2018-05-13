@@ -17,7 +17,7 @@
           <video id="video" preload="auto" src="videos/7_years_s.mp4" crossorigin="anonymous" loop="true" playsinline webkit-playsinline></video>
           <img id="image" src="imgs/pregnant.jpg">
           <img id="fbIcon" src="imgs/fb.png">
-          <audio id="voice" src="sounds/voice_trimmed.mov" preload="auto"></audio>
+          <audio id="voice" src="sounds/voice_v2.mp3" preload="auto"></audio>
       </a-assets> 
 
       <a-marker id="marker" preset='custom' type='pattern' url='data/pattern-marker.patt'>
@@ -34,7 +34,9 @@
       
       <a-entity camera mouse-cursor>
         <a-entity position="0 0 -3"
-                  cursor="fuse: false">
+                  cursor="fuse: false"
+                  geometry="primitive: ring; radiusInner: 0.02; radiusOuter: 0.03"
+                  material="color: blue; shader: flat">
       </a-entity>
 
     </a-scene>
