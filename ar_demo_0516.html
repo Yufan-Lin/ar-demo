@@ -64,16 +64,19 @@
   play.addEventListener('click', (e) => {
     if (isVideoDisplay == false) {
 
-      var video = document.createElement("a-video");
-      video.setAttribute('src', '#video');
-      video.setAttribute('width', '4');
-      video.setAttribute('height', '3');
-      video.setAttribute('position', '0 0 0');
-      video.setAttribute('rotation', '-90 0 0');
+      var videoView = document.createElement("a-video");
+      videoView.setAttribute('src', '#video');
+      videoView.setAttribute('width', '4');
+      videoView.setAttribute('height', '3');
+      videoView.setAttribute('position', '0 0 0');
+      videoView.setAttribute('rotation', '-90 0 0');
+      videoView.setAttribute('autoplay');
 
-      marker.appendChild(video);
+      marker.appendChild(videoView);
 
       marker.removeChild(aImage);
+
+      video.play();
 
       isVideoDisplay = true
 
@@ -83,8 +86,7 @@
 
       marker.removeChild(video);
 
-      isVideoDisplay = false
-}
+    }
   });
 
   marker.addEventListener('click', (e) => {
