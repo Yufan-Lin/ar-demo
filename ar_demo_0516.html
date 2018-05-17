@@ -1,0 +1,130 @@
+<html>
+  <head>
+    <title>AR</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
+    <!-- <script src="https://cdn.rawgit.com/jeromeetienne/AR.js/1.5.0/aframe/build/aframe-ar.js"></script> -->
+    <!-- <script src="js/aframe-physics-system.min.js"></script> -->
+    <script src="https://rawgit.com/mayognaise/aframe-mouse-cursor-component/master/dist/aframe-mouse-cursor-component.min.js"></script>
+    <script src="lib/aframe-ar-1.5.5.js"></script>
+    <!-- Mouse cursor lib -->
+    <link rel="stylesheet" href="style/style.css">
+  </head>
+  <body style='margin : 0px; overflow: hidden;'>
+    <a-scene id="scene" embedded arjs='trackingMethod: best; debugUIEnabled: false;' vr-mode-ui="enabled: false">
+
+      <a-assets>
+          <video id="video" preload="auto" src="videos/7_years_s.mp4" crossorigin="anonymous" loop="true" playsinline webkit-playsinline></video>
+          <img id="image" src="imgs/pregnant.jpg">
+          <img id="fbIcon" src="imgs/fb.png">
+          <audio id="voice" src="sounds/voice_v2.mp3" preload="auto"></audio>
+      </a-assets> 
+
+      <a-marker id="marker" preset='custom' type='pattern' url='data/pattern-marker.patt'>
+        <!-- <a-video id="video-aframe" src="#video" width="4" height="3" position="0 0 0" rotation="-90 0 0"></a-video> -->
+
+        <a-image id="aImage" src="#image" width="2" height="2" position="0 1 0" rotation="-90 0 0">
+          <a-entity sound="src: #voice; volume: 5;"></a-entity>
+        </a-image>
+        
+      </a-marker>
+      
+      <a-entity camera mouse-cursor>
+        <a-entity position="0 0 -3"
+                  cursor="fuse: false">
+
+      </a-entity>
+
+    </a-scene>
+
+    <div style="width: 100%; height: 50px; position: fixed; left: 0; bottom: 0; z-index: 10; overflow: hidde">
+      <button id="fb" class="button">Facebook</button>  
+      <button id="ig" class="button">Instagram</button>
+      <button id="play" class="button">Play Video</button>
+    </div>
+
+<script type="text/javascript">
+  // `click` event emitted by browser on mouse click.
+
+  var soundEntity = document.querySelector('[sound]');
+
+  var isVideoDisplay = false;
+
+  var fb = document.querySelector('#fb');
+  fb.addEventListener('click', (e) => {
+    window.open('https://www.facebook.com', '_blank');
+  });
+
+  var ig = document.querySelector('#ig');
+  ig.addEventListener('click', (e) => {
+    window.open('https://www.instagram.com', '_blank');
+  });
+
+  var play = document.querySelector('#play');
+  play.addEventListener('click', (e) => {
+    if (isVideoDisplay == false) {
+
+      var video = document.createElement("a-video");
+      video.setAttribute('src', '#video');
+      video.setAttribute('width', '4');
+      video.setAttribute('height', '3');
+      video.setAttribute('position', '0 0 0');
+      video.setAttribute('rotation', '-90 0 0');
+
+      marker.appendChild(video);
+
+      marker.removeChild(aImage);
+
+      isVideoDisplay = true
+
+
+
+    } else {
+
+      marker.removeChild(video);
+
+      isVideoDisplay = false
+}
+  });
+
+  marker.addEventListener('click', (e) => {
+
+
+    fb.setAttribute('display', 'block');
+
+  });
+
+
+  scene.addEventListener('click', () => {
+
+    if (isVideoDisplay == false) {
+
+      soundEntity.components.sound.playSound();
+
+    } else {
+
+      if (video.paused) {
+        console.log("Play!");
+
+        video.play();
+        soundEntity.components.sound.pauseSound();
+        
+      } else {
+        console.log("Pause!");
+        video.pause();
+      }
+
+
+    }
+
+    
+
+    
+
+  });
+
+
+</script>
+
+  </body>
+</html>

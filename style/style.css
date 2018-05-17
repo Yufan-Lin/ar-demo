@@ -1,0 +1,30 @@
+.button {
+    color: white;
+    border: none;
+    border-radius: 50px;
+    background-color: rgba(0,0,0,0);
+    width: 100px;
+    height: 100px;
+    position: fixed;
+
+    display: block;
+    z-index: 100;
+}
+
+#fb {
+    background-color: #3b5998;
+    bottom: 20px;
+    left: 20px;
+}
+
+#ig {
+    background-color: #cd486b;
+    bottom: 20px;
+    left: 130px;
+}
+
+#play {
+    background-color: cadetblue;
+    bottom: 20px;
+    left: 240px;
+}
