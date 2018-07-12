@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="lib/html2canvas.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+
+    <h1>Hello</h1>
+    
+    <button>Take a picture</button>
+
+    <div>
+        <h1>This is photos</h1>
+    </div>
+
+    <script>
+    
+    html2canvas(document.body).then(canvas => {
+        document.body.appendChild(canvas)
+
+        console.log(canvas.toDataURL("image/png"));
+        
+        var a = document.createElement('a');
+        a.href = canvas.toDataURL('image/png');
+        a.download = 'canvas.png';
+        a.click();
+
+
+    });
+    
+    </script>
+</body>
+</html>
