@@ -38,11 +38,7 @@
 
     <div style="width: 100%; height: 50px; position: fixed; left: 0; bottom: 0; z-index: 10; overflow: hidde">
         <button id="ig" class="button" style="font-size: 20px">拍照</button>  
-        <button id="fb" class="button" style="font-size: 20px">切換</button>  
         <a id="download-link"></a>
-        <div id="selectVideo" class="select" style="display: none;">
-            <label for="videoSource">選擇鏡頭: </label><select id="videoSource"></select>
-        </div>
     </div>
     
 
@@ -79,27 +75,6 @@
         return resizedCanvas.toDataURL();
     }
 
-    var selectedIndex = 0;
-
-    document.querySelector('#fb').addEventListener("click", () => {
-
-        if ((selectedIndex + 1) < optionValues.length) {
-
-            videoSelect.value = optionValues[selectedIndex + 1];
-            selectedIndex = selectedIndex + 1;
-
-        } else {
-
-            videoSelect.value = optionValues[0];
-            selectedIndex = 0;
-
-        }
-        console.log("selectedIndex: " + selectedIndex);
-
-        start();
-
-    });
-
     document.querySelector('#ig').addEventListener("click", function() {
         let aScene = document.querySelector("a-scene").components.screenshot.getCanvas("perspective");
         let frame = captureVideoFrame("video", "png");
@@ -110,13 +85,8 @@
 
             let link = document.getElementById("download-link", "png");
             link.setAttribute("download", "AR.png");
-            // let uri = b64.replace(/^data:image\/[^;]/, 'data:application/octet-stream');
             link.setAttribute("href", b64);
             link.click();
-
-            // let img = document.querySelector('#show-image');
-            // img.src = b64
-            // img.style.display = "block";
 
         });
     });
@@ -172,109 +142,6 @@
 			images[src].src = sources[src];
 		}
 	}
-
-    var videoSelect = document.querySelector("select#videoSource");
-    var selectors = [videoSelect];
-    var optionValues = [];
-    var isFinished = false;
-
-    videoSelect.addEventListener('click', () => {
-        window.scrollTo(0, 0);
-    });
-
-    function gotDevices(deviceInfos) {
-        // Handles being called several times to update labels. Preserve values.
-        var values = selectors.map(function(select) {
-            return select.value;
-        });
-        selectors.forEach(function(select) {
-            while (select.firstChild) {
-            select.removeChild(select.firstChild);
-            }
-        });
-
-        for (var i = 0; i !== deviceInfos.length; ++i) {
-            var deviceInfo = deviceInfos[i];
-            var option = document.createElement("option");
-            option.value = deviceInfo.deviceId;
-
-            if (deviceInfo.kind === "videoinput") {
-                option.text = deviceInfo.label || "camera " + (videoSelect.length + 1);
-                videoSelect.appendChild(option);
-
-                if (isFinished == false) {
-                optionValues.push(deviceInfo.deviceId);
-            }
-
-            } else {
-                console.log("Some other kind of source/device: ", deviceInfo);
-            }
-
-            selectors.forEach(function(select, selectorIndex) {
-            if (
-                Array.prototype.slice.call(select.childNodes).some(function(n) {
-                return n.value === values[selectorIndex];
-                })
-            ) {
-                select.value = values[selectorIndex];
-            }
-            });
-        }
-
-        isFinished = true;
-    }
-
-    navigator.mediaDevices
-    .enumerateDevices()
-    .then(gotDevices)
-    .catch(handleError);
-
-    function gotStream(stream) {
-        console.log("Got Stream!");
-        var video = document.querySelector('video');
-        // video.srcObject = stream;
-        console.log("------------------video: " + video);
-        // arToolkitSource.domElement.srcObject = stream; // make stream available to console
-        video.srcObject = stream;
-        // Refresh button list in case labels have become available
-        return navigator.mediaDevices.enumerateDevices();
-    }
-
-    function start() {
-
-        console.log("Start!");
-
-        if (window.stream) {
-            window.stream.getTracks().forEach(function(track) {
-                track.stop();
-            });
-        }
-        var videoSource = videoSelect.value;
-        var constraints = {
-            video: {
-                deviceId: videoSource ? { exact: videoSource } : undefined
-            }
-        };
-
-        navigator.mediaDevices
-            .getUserMedia(constraints)
-            .then(gotStream)
-            .then(gotDevices)
-            .catch(handleError);
-    }
-
-    videoSelect.onchange = onChange;
-
-    function onChange() {
-        start();
-        window.scrollTo(0, 0);
-    }
-
-    function handleError(error) {
-        console.log("navigator.getUserMedia error: ", error);
-    }
-
-    onChange();
 
 </script>
 

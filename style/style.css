@@ -11,6 +11,12 @@
     z-index: 100;
 }
 
+#selectVideo {
+    padding-left: 150px;
+    display: block;
+    background-color: red;
+}
+
 #fb {
     background-color: #3b5998;
     bottom: 20px;
