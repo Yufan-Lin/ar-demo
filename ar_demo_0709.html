@@ -1,34 +1,32 @@
 <html>
-  <head>
+
+<head>
     <title>AR</title>
     <meta name="apple-mobile-web-app-capable" content="yes">
+    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
     <script src="https://aframe.io/releases/0.7.0/aframe.min.js"></script>
     <!-- <script src="https://rawgit.com/mayognaise/aframe-mouse-cursor-component/master/dist/aframe-mouse-cursor-component.min.js"></script> -->
-    <script src="lib/aframe-ar-1.5.5.js"></script>
+    <script src="lib/aframe-ar-1.6.0.js"></script>
     <script src="https://unpkg.com/merge-images"></script>
-    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
 
     <link rel="stylesheet" href="style/style.css">
-  </head>
-  <body style='margin : 0px; overflow: hidden;'>
+</head>
+
+<body style='margin : 0px; overflow: hidden;'>
     <a-scene id="scene" embedded arjs='trackingMethod: best; debugUIEnabled: false;' vr-mode-ui="enabled: false" screenshot='width: 480; height: 640'>
 
-      <a-assets>
-          <img id="fbIcon" src="imgs/fb.png">
-          <a-asset-item id="object" src="models/mech_drone/scene.gltf"></a-asset-item>
-      </a-assets> 
+        <a-assets>
+            <img id="fbIcon" src="imgs/fb.png">
+            <a-asset-item id="object" src="models/mech_drone/scene.gltf"></a-asset-item>
+        </a-assets>
 
-      <a-marker id="marker" preset='custom' type='pattern' url='data/pattern-marker.patt'>
+        <a-marker-camera id="marker" preset='custom' type='pattern' url='data/pattern-marker.patt'>
+            <a-entity id="robot" gltf-model="#object" scale="0.01 0.01 0.01" position="0 0.2 0"></a-entity>
+        </a-marker-camera>
 
-        <a-entity id="robot" gltf-model="#object" scale="0.01 0.01 0.01" position="0 0.2 0"></a-entity>
-        
-      </a-marker>
-      
-      <a-entity camera mouse-cursor>
-        <a-entity position="0 0 -3"
-                  cursor="fuse: false">
-
-      </a-entity>
+        <!-- <a-entity camera mouse-cursor>
+            <a-entity position="0 0 -3" cursor="fuse: false"></a-entity>
+        </a-entity> -->
 
     </a-scene>
 
@@ -37,91 +35,88 @@
     <img id="show-image" src="" alt="" style="position: fixed; width: 100%; height: 100%; left: 0; bottom: 0; display: none; z-index: 9;">
 
     <div style="width: 100%; height: 50px; position: fixed; left: 0; bottom: 0; z-index: 10; overflow: hidde">
-        <button id="ig" class="button" style="font-size: 20px">拍照</button>  
-        <button id="fb" class="button" style="font-size: 20px">切換</button>  
+        <button id="ig" class="button" style="font-size: 20px">拍照</button>
+        <button id="fb" class="button" style="font-size: 20px">切換</button>
         <a id="download-link"></a>
         <div id="selectVideo" class="select" style="display: none;">
-            <label for="videoSource">選擇鏡頭: </label><select id="videoSource"></select>
+            <label for="videoSource">選擇鏡頭: </label>
+            <select id="videoSource"></select>
         </div>
     </div>
-    
 
-<script type="text/javascript">
-  // `click` event emitted by browser on mouse click.
-    var soundEntity = document.querySelector('[sound]');
-    var isVideoDisplay = false;
 
-  marker.addEventListener('click', (e) => {
+    <script type="text/javascript">
+        // `click` event emitted by browser on mouse click.
+        var soundEntity = document.querySelector('[sound]');
+        var isVideoDisplay = false;
 
-    fb.setAttribute('display', 'block');
+        marker.addEventListener('click', (e) => {
 
-  });
-
-    function resizeCanvas(origCanvas, width, height) {
-        let resizedCanvas = document.createElement("canvas");
-        let resizedContext = resizedCanvas.getContext("2d");
-
-        resizedCanvas.height = height;
-        resizedCanvas.width = width;
-
-        if (width > height) {
-            // Landscape
-            resizedContext.drawImage(origCanvas, 0, 0, width, height);
-        } else {
-            // Portrait
-            var scale = height / width;
-            var scaledHeight = origCanvas.width * scale;
-            var scaledWidth = origCanvas.height * scale;
-            var marginLeft = ( origCanvas.width - scaledWidth) / 2;
-            resizedContext.drawImage(origCanvas, marginLeft, 0, scaledWidth, scaledHeight);
-        }
-
-        return resizedCanvas.toDataURL();
-    }
-
-    var selectedIndex = 0;
-
-    document.querySelector('#fb').addEventListener("click", () => {
-
-        if ((selectedIndex + 1) < optionValues.length) {
-
-            videoSelect.value = optionValues[selectedIndex + 1];
-            selectedIndex = selectedIndex + 1;
-
-        } else {
-
-            videoSelect.value = optionValues[0];
-            selectedIndex = 0;
-
-        }
-        console.log("selectedIndex: " + selectedIndex);
-
-        start();
-
-    });
-
-    document.querySelector('#ig').addEventListener("click", function() {
-        let aScene = document.querySelector("a-scene").components.screenshot.getCanvas("perspective");
-        let frame = captureVideoFrame("video", "png");
-
-        aScene = resizeCanvas(aScene, frame.width, frame.height);
-        frame = frame.dataUri;
-        mergeImages([frame, aScene]).then(b64 => {
-
-            let link = document.getElementById("download-link", "png");
-            link.setAttribute("download", "AR.png");
-            // let uri = b64.replace(/^data:image\/[^;]/, 'data:application/octet-stream');
-            link.setAttribute("href", b64);
-            link.click();
-
-            // let img = document.querySelector('#show-image');
-            // img.src = b64
-            // img.style.display = "block";
+            fb.setAttribute('display', 'block');
 
         });
-    });
 
-    function captureVideoFrame(video, format, width, height) {
+        function resizeCanvas(origCanvas, width, height) {
+            let resizedCanvas = document.createElement("canvas");
+            let resizedContext = resizedCanvas.getContext("2d");
+
+            resizedCanvas.height = height;
+            resizedCanvas.width = width;
+
+            if (width > height) {
+                // Landscape
+                resizedContext.drawImage(origCanvas, 0, 0, width, height);
+            } else {
+                // Portrait
+                var scale = height / width;
+                var scaledHeight = origCanvas.width * scale;
+                var scaledWidth = origCanvas.height * scale;
+                var marginLeft = (origCanvas.width - scaledWidth) / 2;
+                resizedContext.drawImage(origCanvas, marginLeft, 0, scaledWidth, scaledHeight);
+            }
+
+            return resizedCanvas.toDataURL();
+        }
+
+        var selectedIndex = 1;
+
+        document.querySelector('#fb').addEventListener("click", () => {
+
+            if ((selectedIndex + 1) < optionValues.length) {
+
+                videoSelect.value = optionValues[selectedIndex + 1];
+                selectedIndex = selectedIndex + 1;
+
+            } else {
+
+                videoSelect.value = optionValues[0];
+                selectedIndex = 0;
+
+            }
+            console.log("selectedIndex: " + selectedIndex);
+            console.log("option: " + optionValues);
+            onChange();
+
+        });
+
+        document.querySelector('#ig').addEventListener("click", function () {
+            let aScene = document.querySelector("a-scene").components.screenshot.getCanvas("perspective");
+            let frame = captureVideoFrame("video", "png");
+
+            aScene = resizeCanvas(aScene, frame.width, frame.height);
+            frame = frame.dataUri;
+            mergeImages([frame, aScene]).then(b64 => {
+
+                let link = document.getElementById("download-link", "png");
+                link.setAttribute("download", "AR.png");
+                // let uri = b64.replace(/^data:image\/[^;]/, 'data:application/octet-stream');
+                link.setAttribute("href", b64);
+                link.click();
+
+            });
+        });
+
+        function captureVideoFrame(video, format, width, height) {
             if (typeof video === 'string') {
                 video = document.querySelector(video);
                 console.log('Video:' + video);
@@ -134,149 +129,145 @@
             }
 
             var canvas = document.createElement("CANVAS");
-
             canvas.width = width || video.videoWidth;
             canvas.height = height || video.videoHeight;
             canvas.getContext('2d').drawImage(video, 0, 0);
+
             var dataUri = canvas.toDataURL('image/' + format);
             var data = dataUri.split(',')[1];
             var mimeType = dataUri.split(';')[0].slice(5)
-
+            
             var bytes = window.atob(data);
             var buf = new ArrayBuffer(bytes.length);
             var arr = new Uint8Array(buf);
-
+        
             for (var i = 0; i < bytes.length; i++) {
                 arr[i] = bytes.charCodeAt(i);
             }
 
-            var blob = new Blob([ arr ], { type: mimeType });
+            var blob = new Blob([arr], { type: mimeType });
             return { blob: blob, dataUri: dataUri, format: format, width: canvas.width, height: canvas.height };
         };
 
-    function loadImages(sources, callback) {
-		var images = {};
-		var loadedImages = 0;
-		var numImages = 0;
-		// get num of sources
-		for (var src in sources) {
-			numImages++;
-		}
-		for (var src in sources) {
-			images[src] = new Image();
-			images[src].onload = function () {
-				if (++loadedImages >= numImages) {
-					callback(images);
-				}
-			};
-			images[src].src = sources[src];
-		}
-	}
-
-    var videoSelect = document.querySelector("select#videoSource");
-    var selectors = [videoSelect];
-    var optionValues = [];
-    var isFinished = false;
-
-    videoSelect.addEventListener('click', () => {
-        window.scrollTo(0, 0);
-    });
-
-    function gotDevices(deviceInfos) {
-        // Handles being called several times to update labels. Preserve values.
-        var values = selectors.map(function(select) {
-            return select.value;
-        });
-        selectors.forEach(function(select) {
-            while (select.firstChild) {
-            select.removeChild(select.firstChild);
+        function loadImages(sources, callback) {
+            var images = {};
+            var loadedImages = 0;
+            var numImages = 0;
+            // get num of sources
+            for (var src in sources) {
+                numImages++;
             }
-        });
-
-        for (var i = 0; i !== deviceInfos.length; ++i) {
-            var deviceInfo = deviceInfos[i];
-            var option = document.createElement("option");
-            option.value = deviceInfo.deviceId;
-
-            if (deviceInfo.kind === "videoinput") {
-                option.text = deviceInfo.label || "camera " + (videoSelect.length + 1);
-                videoSelect.appendChild(option);
-
-                if (isFinished == false) {
-                optionValues.push(deviceInfo.deviceId);
+            for (var src in sources) {
+                images[src] = new Image();
+                images[src].onload = function () {
+                    if (++loadedImages >= numImages) {
+                        callback(images);
+                    }
+                };
+                images[src].src = sources[src];
             }
-
-            } else {
-                console.log("Some other kind of source/device: ", deviceInfo);
-            }
-
-            selectors.forEach(function(select, selectorIndex) {
-            if (
-                Array.prototype.slice.call(select.childNodes).some(function(n) {
-                return n.value === values[selectorIndex];
-                })
-            ) {
-                select.value = values[selectorIndex];
-            }
-            });
         }
 
-        isFinished = true;
-    }
+        var videoSelect = document.querySelector("select#videoSource");
+        var selectors = [videoSelect];
+        var optionValues = [];
+        var isFinished = false;
 
-    navigator.mediaDevices
-    .enumerateDevices()
-    .then(gotDevices)
-    .catch(handleError);
-
-    function gotStream(stream) {
-        console.log("Got Stream!");
-        var video = document.querySelector('video');
-        // video.srcObject = stream;
-        console.log("------------------video: " + video);
-        // arToolkitSource.domElement.srcObject = stream; // make stream available to console
-        video.srcObject = stream;
-        // Refresh button list in case labels have become available
-        return navigator.mediaDevices.enumerateDevices();
-    }
-
-    function start() {
-
-        console.log("Start!");
-
-        if (window.stream) {
-            window.stream.getTracks().forEach(function(track) {
-                track.stop();
+        function gotDevices(deviceInfos) {
+            // Handles being called several times to update labels. Preserve values.
+            var values = selectors.map(function (select) {
+                return select.value;
             });
-        }
-        var videoSource = videoSelect.value;
-        var constraints = {
-            video: {
-                deviceId: videoSource ? { exact: videoSource } : undefined
+            selectors.forEach(function (select) {
+                while (select.firstChild) {
+                    select.removeChild(select.firstChild);
+                }
+            });
+
+            for (var i = 0; i !== deviceInfos.length; ++i) {
+                var deviceInfo = deviceInfos[i];
+                var option = document.createElement("option");
+                option.value = deviceInfo.deviceId;
+
+                if (deviceInfo.kind === "videoinput") {
+                    option.text = deviceInfo.label || "camera " + (videoSelect.length + 1);
+                    videoSelect.appendChild(option);
+
+                    if (isFinished == false) {
+                        
+                        optionValues.push(deviceInfo.deviceId);
+                        
+                    }
+                    
+                }
+
+                selectors.forEach(function (select, selectorIndex) {
+                    if (
+                        Array.prototype.slice.call(select.childNodes).some(function (n) {
+                            return n.value === values[selectorIndex];
+                        })
+                    ) {
+                        select.value = values[selectorIndex];
+                    }
+                });
             }
-        };
+
+            isFinished = true;
+        }
 
         navigator.mediaDevices
-            .getUserMedia(constraints)
-            .then(gotStream)
+            .enumerateDevices()
             .then(gotDevices)
             .catch(handleError);
-    }
 
-    videoSelect.onchange = onChange;
+        function gotStream(stream) {
+            console.log("Got Stream!");
+            window.stream = stream;
+            var video = document.querySelector('video');
+            console.log("------------------video: " + video);
+            video.srcObject = stream;
+            // Refresh button list in case labels have become available
+            return navigator.mediaDevices.enumerateDevices();
+        }
 
-    function onChange() {
-        start();
-        window.scrollTo(0, 0);
-    }
+        function start() {
 
-    function handleError(error) {
-        console.log("navigator.getUserMedia error: ", error);
-    }
+            console.log("Start!");
+            if (window.stream) {
+                window.stream.getTracks().forEach(function (track) {
+                    track.stop();
+                });
+            }
 
-    onChange();
+            var videoSource = videoSelect.value;
+            var constraints = {
+                video: {
+                    deviceId: videoSource ? { exact: videoSource } : undefined
+                }
+            };
 
-</script>
+            navigator.mediaDevices
+                .getUserMedia(constraints)
+                .then(gotStream)
+                .then(gotDevices)
+                .catch(handleError);
 
-  </body>
+        }
+
+        videoSelect.onchange = onChange;
+
+        function onChange() {
+            start();
+        }
+
+        function handleError(error) {
+            console.log("navigator.getUserMedia error: ", error.name);
+        }
+
+        // onChange();
+
+    </script>
+
+</body>
+
 </html>
