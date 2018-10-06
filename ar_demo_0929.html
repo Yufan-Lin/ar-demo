@@ -1,0 +1,37 @@
+<html>
+
+<head>
+    <title>AR</title>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+    <script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
+    <!-- <script src="https://rawgit.com/mayognaise/aframe-mouse-cursor-component/master/dist/aframe-mouse-cursor-component.min.js"></script> -->
+    <script src="lib/aframe-ar-1.6.0.js"></script>
+    <script src="lib/fbx-loader.js"></script>
+    <script src="lib/loaders/fbx-model.js"></script>
+
+    <link rel="stylesheet" href="style/style.css">
+</head>
+
+<body style='margin : 0px; overflow: hidden;'>
+    <a-scene id="scene" embedded arjs='trackingMethod: best; debugUIEnabled: false;' vr-mode-ui="enabled: false"
+        screenshot='width: 480; height: 640'>
+
+        <a-assets>
+            <a-asset-item id="object" src="./models/Tree_V08_Final_V01.fbx"></a-asset-item>
+            <!-- <a-asset-item id="robot" src="./models/mech_drone/scene.gltf"></a-asset-item> -->
+        </a-assets>
+
+        <a-marker id="marker" preset='custom' type='pattern' url='data/pattern-marker.patt'>
+            <!-- <a-entity gltf-model="#robot" scale="0.01 0.01 0.01" position="0 0.2 0" material="color: red"> -->
+            <a-entity fbx-model="src: url(models/Tree_V08_Final_V01.fbx)" material="color: red" scale="0.1 0.1 0.1" position="0 0.2 0"></a-entity>
+        </a-marker>
+
+        <a-entity camera>
+            <a-cursor material="color: red; opacity: 0" cursor="fuse: false"></a-cursor>
+        </a-entity>
+
+    </a-scene>
+</body>
+
+</html>

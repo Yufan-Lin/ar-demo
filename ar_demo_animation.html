@@ -22,7 +22,8 @@
         <!-- <a-plane static-body color="#999" height="5" width="5" position="0 -2 0" rotation="-90 0 0"></a-plane> -->
 
         <a-entity id="robot" gltf-model="#object" scale="0.01 0.01 0.01" position="0 0.2 0">
-            <a-animation id="rising" begin="click" attribute="position" from="0 0.2 0" to="0 3 0" easing="ease-in" direction="alternate-reverse"></a-animation>
+            <!-- <a-animation id="rising" begin="click" attribute="position" from="0 0.2 0" to="0 3 0" easing="ease-in" direction="alternate-reverse"></a-animation> -->
+            <a-animation attribute="rotation" dur="3000" to="0 360 0" repeat="infinite" easing="linear"></a-animation>
         </a-entity>
 
       </a-marker>
