@@ -1,0 +1,33 @@
+<html>
+
+    <head>
+        <title>AR</title>
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <script src="https://webrtc.github.io/adapter/adapter-latest.js"></script>
+        <script src="https://aframe.io/releases/0.8.0/aframe.min.js"></script>
+        <script src="lib/aframe-ar-1.6.0.js"></script>
+        <script src="//cdn.rawgit.com/donmccurdy/aframe-extras/v4.2.0/dist/aframe-extras.min.js"></script>
+
+        <link rel="stylesheet" href="style/style.css">
+    </head>
+
+    <body style='margin : 0px; overflow: hidden;'>
+        <a-scene id="scene" embedded arjs='trackingMethod: best; debugUIEnabled: false;' vr-mode-ui="enabled: false"
+            screenshot='width: 480; height: 640'>
+
+            <a-assets>
+                <a-asset-item id="object" src="./models/christmas_tree/ChristmasTree.gltf"></a-asset-item>
+            </a-assets>
+
+            <a-marker id="marker" preset='custom' type='pattern' url='data/pattern-marker.patt'>
+                <a-entity gltf-model="#object" scale="0.1 0.1 0.1" position="-5.25 0 0" animation-mixer></a-entity>
+            </a-marker>
+
+            <a-entity camera>
+                <a-cursor material="color: red; opacity: 0" cursor="fuse: false"></a-cursor>
+            </a-entity>
+
+        </a-scene>
+    </body>
+
+</html>
